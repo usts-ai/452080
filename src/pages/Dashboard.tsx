@@ -86,80 +86,82 @@ const Dashboard: React.FC = () => {
       <div className="flex overflow-hidden pt-16">
         <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
         
-        <div className="flex-grow w-full md:ml-64 min-h-screen">
-          <main className="p-4 md:p-6 max-w-7xl mx-auto">
-            {/* Titre du dashboard avec bouton de bascule du sidebar */}
-            <div className="flex justify-between items-center mb-6">
-              <div>
-                <motion.h1 
-                  className="text-2xl md:text-3xl font-bold text-gray-800"
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  Tableau de bord
-                </motion.h1>
-                <motion.p 
-                  className="text-gray-600 mt-1"
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                >
-                  Bienvenue dans l'espace de gestion UP! Lokal
-                </motion.p>
+        <div className="relative flex-1 w-full min-h-screen">
+          <div className="w-full mx-auto max-w-screen-xl px-4">
+            <main className="p-4 md:p-6">
+              {/* Titre du dashboard avec bouton de bascule du sidebar */}
+              <div className="flex justify-between items-center mb-6">
+                <div>
+                  <motion.h1 
+                    className="text-2xl md:text-3xl font-bold text-gray-800"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    Tableau de bord
+                  </motion.h1>
+                  <motion.p 
+                    className="text-gray-600 mt-1"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                  >
+                    Bienvenue dans l'espace de gestion UP! Lokal
+                  </motion.p>
+                </div>
+                
+                <div className="flex space-x-3">
+                  <motion.button 
+                    className="md:hidden p-2 rounded-lg bg-white shadow-sm border border-gray-200 text-gray-700"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={toggleSidebar}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                  </motion.button>
+                  
+                  <motion.button 
+                    className="px-4 py-2 rounded-lg bg-emerald-600 text-white font-medium flex items-center shadow-sm"
+                    whileHover={{ scale: 1.05, backgroundColor: '#059669' }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Nouveau Produit
+                  </motion.button>
+                </div>
               </div>
               
-              <div className="flex space-x-3">
-                <motion.button 
-                  className="md:hidden p-2 rounded-lg bg-white shadow-sm border border-gray-200 text-gray-700"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={toggleSidebar}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                </motion.button>
-                
-                <motion.button 
-                  className="px-4 py-2 rounded-lg bg-emerald-600 text-white font-medium flex items-center shadow-sm"
-                  whileHover={{ scale: 1.05, backgroundColor: '#059669' }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                  </svg>
-                  Nouveau Produit
-                </motion.button>
+              {/* Cartes statistiques */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
+                {statsCards.map((stat, index) => (
+                  <StatCard 
+                    key={index}
+                    title={stat.title}
+                    value={stat.value}
+                    icon={stat.icon}
+                    color={stat.color}
+                    trend={stat.trend}
+                  />
+                ))}
               </div>
-            </div>
-            
-            {/* Cartes statistiques */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
-              {statsCards.map((stat, index) => (
-                <StatCard 
-                  key={index}
-                  title={stat.title}
-                  value={stat.value}
-                  icon={stat.icon}
-                  color={stat.color}
-                  trend={stat.trend}
-                />
-              ))}
-            </div>
-            
-            {/* Graphiques et tableaux */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-              <SalesChart />
-              <CategoryDistribution />
-            </div>
-            
-            {/* Commandes récentes et partenaires */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <RecentOrders />
-              <PartnersCard />
-            </div>
-          </main>
+              
+              {/* Graphiques et tableaux */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <SalesChart />
+                <CategoryDistribution />
+              </div>
+              
+              {/* Commandes récentes et partenaires */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <RecentOrders />
+                <PartnersCard />
+              </div>
+            </main>
+          </div>
         </div>
       </div>
       
